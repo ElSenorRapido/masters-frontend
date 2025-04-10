@@ -1,18 +1,14 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'dist', // The directory where the build files will go
-    assetsDir: 'assets', // Assets like JS, CSS, etc.
+    outDir: 'dist',  // Output directory for static assets
+    assetsDir: 'assets',  // Assets directory inside dist
     rollupOptions: {
-      input: '/index.html',
-      output: {
-        // Set up output directory structure
-        dir: 'dist',
-        format: 'es',
-      }
-    }
+      input: '/vercel/path0/index.html',
+    },
   }
-})
+});
