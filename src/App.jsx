@@ -1,43 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import "./index.css";
 
-function App() {
-  const [scores, setScores] = useState([]);
-
-  const fetchScores = async () => {
-    try {
-      const res = await fetch('https://masters-backend-tyzw.onrender.com/api/scores');
-      const data = await res.json();
-      setScores(data);
-    } catch (error) {
-      console.error('Error fetching scores:', error);
-    }
-  };
+export default function App() {
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetchScores();
-    const interval = setInterval(fetchScores, 60000); // Refresh every 60 seconds
-    return () => clearInterval(interval);
+    fetch("https://masters-backend-tyzw.onrender.com/api/scores")
+      .then((res) => res.json())
+      .then((data) => setData(data))
+      .catch((err) => console.error("Error fetching scores:", err));
   }, []);
 
+  const getScoreClass = (score) => {
+    if (score <= -5) return "score-great";
+    if (score <= -1) return "score-good";
+    if (score === 0) return "score-even";
+    return "score-bad";
+  };
+
   return (
-    <div className="bg-green-100 min-h-screen p-4">
-      <h1 className="text-3xl font-bold text-center mb-4">Masters Pool Leaderboard</h1>
-      <div className="overflow-auto shadow-xl rounded-xl bg-white">
-        {scores.map((player, idx) => (
-          <div key={idx} className="border-b last:border-0 p-4">
-            <h2 className="text-xl font-bold">{idx + 1}. {player.name} ({player.total})</h2>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {player.picks.map((pick, pickIdx) => (
-                <span key={pickIdx} className="px-3 py-1 bg-gray-200 rounded">
-                  {pick.golfer}: <strong>{pick.score === 999 ? 'N/A' : pick.score}</strong>
-                </span>
-              ))}
-            </div>
+    <div className="container">
+      <h1>🏌️ Masters Pool Leaderboard</h1>
+      {data.map((entry, index) => (
+        <div key={index} className="card">
+          <h2>{index + 1}. {entry.name} ({entry.total > 0 ? "+" : ""}{entry.total})</h2>
+          <div className="picks">
+            {entry.picks.map((golfer, i) => {
+              const score = entry[golfer] ?? "—";
+              return (
+                <div key={i} className={`golfer ${getScoreClass(score)}`}>
+                  <strong>{golfer}</strong>: {score}
+                </div>
+              );
+            })}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
-
-export default App;
