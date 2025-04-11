@@ -28,11 +28,12 @@ export default function App() {
             {entry.total})
           </h2>
           <div className=\"picks\">
-            {entry.picks.map((golfer, i) => (
-              <div key={i} className={`golfer ${getScoreClass(golfer.score)}`}>
-                <strong>{golfer.name}</strong>: {golfer.score}
-              </div>
-            ))}
+           {Object.entries(entry.picks).map(([name, score], i) => (
+  <div key={i} className={`golfer ${getScoreClass(score)}`}>
+    <strong>{name}</strong>: {score}
+  </div>
+))}
+
           </div>
         </div>
       ))}
