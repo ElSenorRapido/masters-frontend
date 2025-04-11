@@ -1,37 +1,38 @@
-import { useEffect, useState } from "react";
-import "./index.css";
+import { useEffect, useState } from \"react\";
+import \"./index.css\";
 
 export default function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("https://masters-backend-tyzw.onrender.com/api/scores")
+    fetch(\"https://masters-backend-tyzw.onrender.com/api/scores\")
       .then((res) => res.json())
       .then((data) => setData(data))
-      .catch((err) => console.error("Error fetching scores:", err));
+      .catch((err) => console.error(\"Error fetching scores:\", err));
   }, []);
 
   const getScoreClass = (score) => {
-    if (score <= -5) return "score-great";
-    if (score <= -1) return "score-good";
-    if (score === 0) return "score-even";
-    return "score-bad";
+    if (score <= -5) return \"score-great\";
+    if (score <= -1) return \"score-good\";
+    if (score === 0) return \"score-even\";
+    return \"score-bad\";
   };
 
   return (
-    <div className="container">
+    <div className=\"container\">
       <h1>🏌️ Masters Pool Leaderboard</h1>
       {data.map((entry, index) => (
-        <div key={index} className="card">
-          <h2>{index + 1}. {entry.name} ({entry.total > 0 ? "+" : ""}{entry.total})</h2>
-          <div className="picks">
-           {entry.picks.map((golfer, i) => {
-  return (
-    <div key={i} className={`golfer ${getScoreClass(golfer.score)}`}>
-      <strong>{golfer.name}</strong>: {golfer.score}
-    </div>
-  );
-})}
+        <div key={index} className=\"card\">
+          <h2>
+            {index + 1}. {entry.name} ({entry.total > 0 ? \"+\" : \"\"}
+            {entry.total})
+          </h2>
+          <div className=\"picks\">
+            {entry.picks.map((golfer, i) => (
+              <div key={i} className={`golfer ${getScoreClass(golfer.score)}`}>
+                <strong>{golfer.name}</strong>: {golfer.score}
+              </div>
+            ))}
           </div>
         </div>
       ))}
