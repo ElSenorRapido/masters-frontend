@@ -1,12 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Masters Golf Pool</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masters Golf Pool</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>🏌️ Masters Pool Leaderboard</h1>
+  <div id="app">Loading...</div>
+
+  <script>
+    async function loadScores() {
+      const app = document.getElementById("app");
+      app.innerHTML = "Loading...";
+
+      const res = await fetch("https://masters-backend-tyzw.onrender.com/api/scores");
+      const data = await res.json();
+
+      let html = "";
+      data.forEach((entry, index) => {
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const header = document.createElement("h2");
+        header.textContent = `${index + 1}. ${entry.name} (${entry.total > 0 ? "+" : ""}${entry.total})`;
+        card.appendChild(header);
+
+        const picksDiv = document.createElement("div");
+        picksDiv.className = "picks";
+
+        entry.picks.forEach((player) => {
+          const score = player.score;
+          const golfer = document.createElement("div");
+          golfer.className = "golfer";
+
+          if (!isNaN(score)) {
+            if (score <= -5) golfer.classList.add("score-great");
+            else if (score <= -1) golfer.classList.add("score-good");
+            else if (score === 0) golfer.classList.add("score-even");
+            else golfer.classList.add("score-bad");
+          }
+
+          golfer.innerHTML = `<strong>${player.golfer}</strong>: ${score}`;
+          picksDiv.appendChild(golfer);
+        });
+
+        card.appendChild(picksDiv);
+        app.appendChild(card);
+      });
+    }
+
+    loadScores();
+  </script>
+</body>
 </html>

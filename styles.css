@@ -1,0 +1,48 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 2rem;
+  margin: 0;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.card {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+h2 {
+  margin-bottom: 1rem;
+}
+.picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+.golfer {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+  color: #333;
+}
+.score-great {
+  background-color: #c8f7c5;
+  color: #2e7d32;
+}
+.score-good {
+  background-color: #e0f2f1;
+  color: #00796b;
+}
+.score-even {
+  background-color: #f1f1f1;
+  color: #333;
+}
+.score-bad {
+  background-color: #f8d7da;
+  color: #c62828;
+}
