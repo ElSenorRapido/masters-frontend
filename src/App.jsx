@@ -25,14 +25,13 @@ export default function App() {
         <div key={index} className="card">
           <h2>{index + 1}. {entry.name} ({entry.total > 0 ? "+" : ""}{entry.total})</h2>
           <div className="picks">
-            {entry.picks.map((golfer, i) => {
-              const score = entry[golfer] ?? "—";
-              return (
-                <div key={i} className={`golfer ${getScoreClass(score)}`}>
-                  <strong>{golfer}</strong>: {score}
-                </div>
-              );
-            })}
+           {entry.picks.map((golfer, i) => {
+  return (
+    <div key={i} className={`golfer ${getScoreClass(golfer.score)}`}>
+      <strong>{golfer.name}</strong>: {golfer.score}
+    </div>
+  );
+})}
           </div>
         </div>
       ))}
