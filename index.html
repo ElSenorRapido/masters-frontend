@@ -8,12 +8,62 @@
 </head>
 <body>
   <h1>Masters Pool Leaderboard</h1>
-
-  <!-- Your leaderboard will render here -->
-  <div id="app"></div>
+  <div id="app">Loading...</div>
 
   <script>
-    // Your fetch and DOM update logic here
+    async function loadScores() {
+      const app = document.getElementById("app");
+      app.innerHTML = "Loading...";
+
+      try {
+        const res = await fetch("https://masters-backend-tyzw.onrender.com/api/scores");
+        const data = await res.json();
+
+        app.innerHTML = "";
+        data.forEach((entry, index) => {
+          const card = document.createElement("div");
+          card.className = "card";
+
+          const header = document.createElement("h2");
+          header.textContent = `${index + 1}. ${entry.name} (${entry.total < 0 ? entry.total : "+" + entry.total})`;
+          card.appendChild(header);
+
+          const picksDiv = document.createElement("div");
+          picksDiv.className = "picks";
+
+          entry.picks.forEach(player => {
+            const score = entry.playerScores?.[player] ?? "—";
+            const golfer = document.createElement("div");
+            golfer.className = "golfer";
+
+            // Style by score
+            if (!isNaN(score)) {
+              if (score <= -4) {
+                golfer.classList.add("score-great");
+              } else if (score < 0) {
+                golfer.classList.add("score-good");
+              } else if (score == 0) {
+                golfer.classList.add("score-even");
+              } else {
+                golfer.classList.add("score-bad");
+              }
+            }
+
+            golfer.textContent = `${player}: ${score}`;
+            picksDiv.appendChild(golfer);
+          });
+
+          card.appendChild(picksDiv);
+          app.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error fetching scores:", err);
+        app.innerHTML = "Error loading scores.";
+      }
+    }
+
+    loadScores();
+    setInterval(loadScores, 60000); // refresh every 60 sec
   </script>
 </body>
 </html>
